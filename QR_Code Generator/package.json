@@ -1,0 +1,18 @@
+{
+  "name": "qr_code-generator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pankaj",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "inquirer": "^9.2.23",
+    "qr-image": "^3.2.0",
+    "qrcode": "^1.5.3",
+    "readline-sync": "^1.4.10"
+  }
+}
