@@ -24,7 +24,14 @@ const sendMail = async function(formData) {
         from: 'demoid0077@gmail.com',
         to: "pankajsbisht88@gmail.com",  
         subject: 'Exclusive Offer: 50% Discount on All Items!',
-        html: htmlTemplate
+        html: htmlTemplate,
+        attachments: [
+            {
+                filename: 'logo.png',
+                path: path.join(__dirname, 'logo.png'),
+                cid: 'logo' 
+            }
+        ]
     });
 
     console.log("Message has been sent: %s", messageSubmit.messageId);
