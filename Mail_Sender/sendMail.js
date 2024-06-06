@@ -1,7 +1,9 @@
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 
 const sendMail = async function(formData) {
-    const { name, email, message } = formData;
+    const { name, message } = formData;
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -13,19 +15,19 @@ const sendMail = async function(formData) {
         }
     });
 
-        let messageSubmit = await transporter.sendMail({
-            from: 'demoid0077@gmail.com',
-            to: 'pankajsbisht88@gmail.com',
-            subject: 'Form submission',
-            text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
-            html: `<p><b>Name:</b> ${name}</p>
-                   <p><b>Email:</b> ${email}</p>
-                   <p><b>Message:</b> ${message}</p>`
-        });
+    const htmlTemplatePath = path.join(__dirname, 'emailTemplate.html');
+    let htmlTemplate = fs.readFileSync(htmlTemplatePath, 'utf8');
 
-        console.log("Message has been sent: %s", messageSubmit.messageId);
+    htmlTemplate = htmlTemplate.replace('{{name}}', name).replace('{{message}}', message);
 
-    
+    let messageSubmit = await transporter.sendMail({
+        from: 'demoid0077@gmail.com',
+        to: "pankajsbisht88@gmail.com",  
+        subject: 'Exclusive Offer: 50% Discount on All Items!',
+        html: htmlTemplate
+    });
+
+    console.log("Message has been sent: %s", messageSubmit.messageId);
 };
 
 module.exports = sendMail;
