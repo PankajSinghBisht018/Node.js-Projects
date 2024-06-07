@@ -5,7 +5,6 @@ const sendMail = require("./sendMail.js");
 const app = express();
 const PORT = 5000;
 
-app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", function(req, res) {

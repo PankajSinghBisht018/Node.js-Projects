@@ -5,52 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>End of Season Sale</title>
     <style>
-        body {
-            background-color: white;
-            padding: 20px;
+        body, html {
+            margin: 0;
+            padding: 0;
         }
         .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
             background-color: wheat;
             border-radius: 5px;
-            padding: 20px;
-            margin: 0 auto;
-            max-width: 600px;
         }
+
         .logo {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .logo img {
             width: 150px;
         }
+
         .content {
             text-align: center;
         }
-        .content h1 {
+ 
+        .content h1, .content h2, .content p {
             color: orangered;
             margin-bottom: 10px;
         }
-        .content h2 {
-            color: orangered;
-            margin-bottom: 10px;
-        }
-        .content p {
-            color: orangered;
-            margin-bottom: 20px;
-        }
+
         .btn {
+            display: inline-block;
             background-color: red;
             color: #ffffff;
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
         }
+
         .footer {
             text-align: center;
             margin-top: 20px;
             color: #666666;
             font-size: 12px;
         }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .grid img {
+            width: calc(50% - 10px);
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .grid img:nth-child(-n+2) {
+            width: 49%; 
+        }
+
     </style>
 </head>
 <body>
@@ -61,9 +81,16 @@
         <div class="content">
             <h1>Free Shipping and Delivery</h1>
             <h2>End of Season Sale</h2>
-            <p>Our seasonal sale continues to deliver with HOT savings on absolutely everything we have to offer. Get 40% off all your favorites.</p>
+            <p>Our seasonal sale continues to deliver with HOT savings on absolutely everything we have to offer. Get 40% off all your favorites.</p> 
+            <div class="grid">
+                <img src="cid:product_1" alt="Product1">
+                <img src="cid:product_2" alt="Product2">
+            </div> 
             <a href="#" class="btn">Shop Now</a>
+            </div>
+
         </div>
+       
         <div class="footer">
             <p>If you have any questions, feel free to reply to this email.</p>
             <p>&copy; 2024 SnapMart.com. All rights reserved.</p>
