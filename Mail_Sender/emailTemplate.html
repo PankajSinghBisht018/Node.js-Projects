@@ -1,100 +1,283 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>End of Season Sale</title>
     <style>
-        body, html {
+        body {
             margin: 0;
+            background-color: #cccccc;
+        }
+
+        table {
+            border-spacing: 0;
+        }
+
+        td {
             padding: 0;
         }
-        .container {
+
+        img {
+            border: 0;
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #cccccc;
+            padding-bottom: 60px;
+        }
+
+        .main {
+            background-color: #ffffff;
+            margin: 0 auto;
             width: 100%;
             max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-            background-color: wheat;
-            border-radius: 5px;
+            border-spacing: 0;
+            font-family: Arial, sans-serif;
+            color: #333333;
         }
 
-        .logo {
+        .two-columns,
+        .one-column {
             text-align: center;
-            margin-bottom: 20px;
+            font-size: 0;
         }
 
-        .logo img {
-            width: 150px;
+        .two-columns .column,
+        .one-column .column {
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .two-columns .column {
+            max-width: 50%;
+        }
+
+        .one-column .column {
+            max-width: 100%;
+        }
+
+        .padding {
+            padding: 15px;
         }
 
         .content {
-            text-align: center;
-        }
- 
-        .content h1, .content h2, .content p {
-            color: orangered;
-            margin-bottom: 10px;
+            font-size: 15px;
+            line-height: 20px;
+            padding: 0 5px;
         }
 
-        .btn {
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .social {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .social a {
             display: inline-block;
-            background-color: red;
-            color: #ffffff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        .social img {
+            max-width: 20px;
+            height: auto;
+        }
+
+        .product {
+            padding: 10px;
+            position: relative;
+        }
+
+        .product img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product p {
+            margin: 5px 0;
+            font-weight: bold;
+            font-size: 17px;
+            color: gray;
+            text-align: center;
+        }
+
+        .product .phone-name {
+            color: black;
+        }
+
+        .product .label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: darkgoldenrod;
+            color: white;
+            padding: 5px;
+            font-size: 12px;
+            font-weight: bold;
         }
 
         .footer {
             text-align: center;
-            margin-top: 20px;
+            padding: 20px 0;
+            background-color: #f1f1f1;
             color: #666666;
-            font-size: 12px;
         }
 
-        .grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-top: 20px;
+        .footer p {
+            margin: 5px 0;
         }
 
-        .grid img {
-            width: calc(50% - 10px);
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        @media screen and (max-width: 600px) {
+            .two-columns .column {
+                max-width: 100% !important;
+                display: block;
+                text-align: center;
+            }
+
+            .social {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .social a {
+                margin: 5px 0;
+            }
         }
 
-        .grid img:nth-child(-n+2) {
-            width: 49%; 
+        .shop-now-button {
+            background-color: red;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 20px;
+            transition: transform 0.2s;
         }
 
+        .shop-now-button:hover {
+            transform: scale(1.05);
+        }
     </style>
+    <title>mail Template</title>
 </head>
-<body>
-    <div class="container">
-        <div class="logo">
-            <img src="cid:logo" alt="SnapMart">
-        </div>
-        <div class="content">
-            <h1>Free Shipping and Delivery</h1>
-            <h2>End of Season Sale</h2>
-            <p>Our seasonal sale continues to deliver with HOT savings on absolutely everything we have to offer. Get 40% off all your favorites.</p> 
-            <div class="grid">
-                <img src="cid:product_1" alt="Product1">
-                <img src="cid:product_2" alt="Product2">
-            </div> 
-            <a href="#" class="btn">Shop Now</a>
-            </div>
 
-        </div>
-       
-        <div class="footer">
-            <p>If you have any questions, feel free to reply to this email.</p>
-            <p>&copy; 2024 SnapMart.com. All rights reserved.</p>
-        </div>
-    </div>
+<body>
+    <center class="wrapper">
+        <table class="main" width="100%">
+            <tr>
+                <td height="8" style="background-color: black;"></td>
+            </tr>
+            <tr>
+                <td style="padding: 14px 0 4px; text-align: center;">
+                    <a href="/" style="display: inline-block;">
+                        <img src="cid:logo" alt="Logo" width="180">
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center; padding: 20px 10px;">
+                    <h1 style="font-size: 24px; margin: 0; color: red;">Get Up to 50% Off on Selected Items!</h1>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: center; padding: 0 10px;">
+                    <h2 style="font-size: 20px; margin: 0; color: orangered;">Shop Now for Limited Time Offers!</h2>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center; padding: 20px 10px;">
+                    <p style="font-size: 14px; margin: 0; color: black;">Our seasonal sale continues to deliver with HOT
+                        savings on absolutely everything we have to offer. Get 50% off all your favorites.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td class="two-columns">
+                                <table class="column">
+                                    <tr>
+                                        <td class="product">
+                                            <a href="#"><img src="cid:product_1" alt="Product 1"></a>
+                                            <p class="phone-name">Iphone 14</p>
+                                            <p> ₹74000</p>
+                                            <span class="label">50% Off</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="column">
+                                    <tr>
+                                        <td class="product">
+                                            <a href="#"><img src="cid:product_2" alt="Product 2"></a>
+                                            <p class="phone-name">Samsung S23 Ultra</p>
+                                            <p> ₹125000</p>
+                                            <span class="label">30% Off</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="two-columns">
+                                <table class="column">
+                                    <tr>
+                                        <td class="product">
+                                            <a href="#"><img src="cid:product_3" alt="Product 3"></a>
+                                            <p class="phone-name">Google Pixel 8</p>
+                                            <p> ₹110000</p>
+                                            <span class="label">20% Off</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="column">
+                                    <tr>
+                                        <td class="product">
+                                            <a href="#"><img src="cid:product_4" alt="Product 4"></a>
+                                            <p class="phone-name">Motorola edge50</p>
+                                            <p> ₹30000</p>
+                                            <span class="label">10% Off</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center; padding: 20px 10px; color: #ffffff;">
+                    <a href="/" class="shop-now-button">Shop Now</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="social">
+                    <a href="https://www.facebook.com"><img src="cid:black-facebook" alt="Facebook"></a>
+                    <a href="https://www.twitter.com"><img src="cid:black-twitter" alt="Twitter"></a>
+                    <a href="https://www.linkedin.com"><img src="cid:black-linkedin" alt="LinkedIn"></a>
+                    <a href="https://www.instagram.com"><img src="cid:black-instagram" alt="Instagram"></a>
+                </td>
+            </tr>
+            <tr>
+                <td class="footer">
+                    <p>&copy; 2024 SnapMart.com. All rights reserved.</p>
+                </td>
+            </tr>
+        </table>
+    </center>
 </body>
+
 </html>
