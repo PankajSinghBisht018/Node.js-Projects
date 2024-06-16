@@ -1,14 +1,13 @@
-const mongoose=require('mongoose');
-const  conn =async(req,res)=>{
-    try {
-        await mongoose.connect("mongodb+srv://Pankaj:helloworld@cluster0.mskvocq.mongodb.net/").then(()=>{
-    console.log("connected")
-});
+const mongoose = require('mongoose');
 
-    } catch (error) {
-        res.status(404).json({
-            message:"not connected"
+const connectDB = async () => {
+    try {
+        await mongoose.connect('mongodb://localhost:27017/todos', {
         });
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('Connection error', error);
     }
 };
-conn()
+
+module.exports = connectDB;
