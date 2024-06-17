@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const connectDB = require('./conn/conn');
+const userRoutes = require('./routes/userRoutes');
 const todoRoutes = require('./routes/todoRoutes');
 
 const app = express();
@@ -12,6 +13,7 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use('/user', userRoutes);
 app.use('/todos', todoRoutes);
 
 app.listen(PORT, () => {
