@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit, faSave, faPlus, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -12,18 +12,32 @@ const Todo = ({ todos, showCompleted, fetchTodos }) => {
     const [addingTask, setAddingTask] = useState(false);
     const [editTodoId, setEditTodoId] = useState(null);
 
+    useEffect(() => {
+        fetchTodos();
+    }, [fetchTodos]);
+
+    const getAuthToken = () => localStorage.getItem('token');
+
     const handleAdd = async () => {
         if (title.trim() !== '' && body.trim() !== '') {
             setAddingTask(true);
             try {
-                const response = await axios.post('http://localhost:5000/todos', { title, body, completed: false });
-                fetchTodos();
-                setTitle('');
-                setBody('');
-                toast.success("Task added successfully!", { position: "top-center" });
+                setTimeout(async () => {
+                    const response = await axios.post('http://localhost:5000/todos', 
+                        { title, body, completed: false }, 
+                        { 
+                            headers: { 'Authorization': `Bearer ${getAuthToken()}`, 'Content-Type': 'application/json' },
+                        }
+                    );
+                    fetchTodos();
+                    setTitle('');
+                    setBody('');
+                    toast.success("Task added successfully!", { position: "top-center" });
+                    setAddingTask(false);
+                }, 3000);
             } catch (error) {
                 console.error('Error adding todo', error);
-            } finally {
+                toast.error("Error adding task. Please try again.", { position: "top-center" });
                 setAddingTask(false);
             }
         } else {
@@ -33,11 +47,12 @@ const Todo = ({ todos, showCompleted, fetchTodos }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/todos/${id}`);
+            await axios.delete(`http://localhost:5000/todos/${id}`, { headers: { 'Authorization': `Bearer ${getAuthToken()}` } });
             fetchTodos();
             toast.error("Task deleted successfully!", { position: "top-center" });
         } catch (error) {
             console.error('Error deleting todo', error);
+            toast.error("Error deleting task. Please try again.", { position: "top-center" });
         }
     };
 
@@ -47,10 +62,14 @@ const Todo = ({ todos, showCompleted, fetchTodos }) => {
         setBody(body);
     };
 
-    const handleUpdate = async (id, updatedTitle, updatedBody) => {
-        if (updatedTitle.trim() !== '' && updatedBody.trim() !== '') {
+    const handleUpdate = async (id) => {
+        if (title.trim() !== '' && body.trim() !== '') {
             try {
-                const response = await axios.put(`http://localhost:5000/todos/${id}`, { title: updatedTitle, body: updatedBody, completed: todos.find(item => item._id === id).completed });
+                const todo = todos.find(item => item._id === id);
+                const response = await axios.put(`http://localhost:5000/todos/${id}`, 
+                    { title, body, completed: todo.completed }, 
+                    { headers: { 'Authorization': `Bearer ${getAuthToken()}`, 'Content-Type': 'application/json' } }
+                );
                 fetchTodos();
                 setEditTodoId(null);
                 setTitle('');
@@ -58,6 +77,7 @@ const Todo = ({ todos, showCompleted, fetchTodos }) => {
                 toast.success("Task updated successfully!", { position: "top-center" });
             } catch (error) {
                 console.error('Error updating todo', error);
+                toast.error("Error updating task. Please try again.", { position: "top-center" });
             }
         } else {
             toast.error("Please enter a valid title and body for the task!", { position: "top-center" });
@@ -67,10 +87,14 @@ const Todo = ({ todos, showCompleted, fetchTodos }) => {
     const handleComplete = async (id) => {
         const todoToUpdate = todos.find(item => item._id === id);
         try {
-            const response = await axios.put(`http://localhost:5000/todos/${id}`, { title: todoToUpdate.title, body: todoToUpdate.body, completed: !todoToUpdate.completed });
+            const response = await axios.put(`http://localhost:5000/todos/${id}`, 
+                { title: todoToUpdate.title, body: todoToUpdate.body, completed: !todoToUpdate.completed }, 
+                { headers: { 'Authorization': `Bearer ${getAuthToken()}`, 'Content-Type': 'application/json' } }
+            );
             fetchTodos();
         } catch (error) {
             console.error('Error updating todo', error);
+            toast.error("Error updating task. Please try again.", { position: "top-center" });
         }
     };
 
@@ -110,75 +134,69 @@ const Todo = ({ todos, showCompleted, fetchTodos }) => {
                         rows={4}
                         value={body}
                         onChange={(e) => setBody(e.target.value)}
-                        className='mb-4'
                     />
                 </div>
             </Paper>
             <Typography variant="h5" className='font-bold mb-3'>Tasks</Typography>
             <Grid container spacing={2}>
-                {todos.map((item) => (
-                    (!showCompleted || item.completed) &&
-                    <Grid item xs={12} key={item._id}>
-                        <Paper elevation={3} className='p-4 mb-2'>
-                            <div className='flex items-center justify-between'>
-                                <div>
-                                    <Checkbox
-                                        checked={item.completed}
-                                        onChange={() => handleComplete(item._id)}
-                                    />
-                                    <span className={`ml-2 ${item.completed ? 'line-through' : ''}`}>{item.title}: {item.body}</span>
+                {todos.map(todo => (
+                    <Grid item xs={12} key={todo._id}>
+                        {(showCompleted && todo.completed) || (!showCompleted && !todo.completed) ? (
+                            <Paper elevation={3} className='p-3'>
+                                <div className="flex justify-between items-center mb-2">
+                                    <Typography variant="h6" className={`font-bold ${todo.completed ? 'line-through' : ''}`}>{todo.title}</Typography>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox
+                                            checked={todo.completed}
+                                            onChange={() => handleComplete(todo._id)}
+                                            color="primary"
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faEdit}
+                                            className="cursor-pointer"
+                                            onClick={() => handleEdit(todo._id, todo.title, todo.body)}
+                                        />
+                                        <label>Edit</label>
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            className="cursor-pointer text-red-600"
+                                            onClick={() => handleDelete(todo._id)}
+                                        />
+                                        <label>Delete</label>
+                                    </div>
                                 </div>
-                                {editTodoId === item._id ? (
-                                    <div className="flex flex-col space-y-3">
+                                <Typography variant="body1" className={todo.completed ? 'line-through' : ''}>{todo.body}</Typography>
+                                {editTodoId === todo._id && (
+                                    <div className="flex flex-col space-y-3 mt-3">
                                         <TextField
                                             fullWidth
                                             variant="outlined"
+                                            placeholder="Update Title"
                                             value={title}
-                                            placeholder="Title"
                                             onChange={(e) => setTitle(e.target.value)}
-                                            className='mb-4'
+                                            className='mb-2'
                                         />
                                         <TextField
                                             fullWidth
                                             variant="outlined"
-                                            value={body}
-                                            placeholder="Body"
+                                            placeholder="Update Body"
                                             multiline
                                             rows={4}
+                                            value={body}
                                             onChange={(e) => setBody(e.target.value)}
-                                            className='mb-2'
                                         />
                                         <Button
                                             variant="contained"
                                             color="primary"
-                                            className='text-white bg-blue-800 rounded-xl py-2 px-3 mx-1'
-                                            onClick={() => handleUpdate(item._id, title, body)}
+                                            className='text-white bg-green-700 rounded-xl py-2 px-3'
+                                            onClick={() => handleUpdate(todo._id)}
                                         >
                                             <FontAwesomeIcon icon={faSave} /> Update
                                         </Button>
                                     </div>
-                                ) : (
-                                    <div className='flex gap-2'>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            className='text-white bg-blue-800 rounded-xl py-2 px-3'
-                                            onClick={() => handleDelete(item._id)}
-                                        >
-                                            <FontAwesomeIcon icon={faTrash} /> Delete
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            className='text-white bg-blue-800 rounded-xl py-2 px-3'
-                                            onClick={() => handleEdit(item._id, item.title, item.body)}
-                                        >
-                                            <FontAwesomeIcon icon={faEdit} /> Edit
-                                        </Button>
-                                    </div>
                                 )}
-                            </div>
-                        </Paper>
+                            </Paper>
+                        ) : null}
                     </Grid>
                 ))}
             </Grid>
@@ -187,4 +205,3 @@ const Todo = ({ todos, showCompleted, fetchTodos }) => {
 };
 
 export default Todo;
-
