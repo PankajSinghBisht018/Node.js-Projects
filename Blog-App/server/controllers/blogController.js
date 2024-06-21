@@ -1,4 +1,5 @@
 const Blog = require('../models/Blog');
+const cloudinary = require('../db/cloudinary');
 
 async function getBlogs(req, res) {
     try {
@@ -10,20 +11,33 @@ async function getBlogs(req, res) {
 }
 
 async function createBlog(req, res) {
-    const { title, content, category } = req.body;
-
     try {
-        const newBlog = new Blog({ title, content, category, user: req.user.id });
+        const { title, content, category } = req.body;
+
+
+        if (!req.file) {
+            return res.status(400).json({ message: 'Image file is required' });
+        }
+
+        const result = await cloudinary.uploader.upload(req.file.path);
+
+        const newBlog = new Blog({
+            title,
+            content,
+            category,
+            image: result.secure_url,
+            user: req.user.id,
+        });
+
         await newBlog.save();
         res.status(201).json(newBlog);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error(err.message);
+        res.status(500).json({ message: 'Server error: ' + err.message });
     }
 }
 
 async function updateBlog(req, res) {
-    const { title, content, category } = req.body;
-
     try {
         const blog = await Blog.findById(req.params.id);
 
@@ -35,9 +49,18 @@ async function updateBlog(req, res) {
             return res.status(403).json({ message: 'Not authorized' });
         }
 
+        const { title, content, category } = req.body;
+        let imageUrl = blog.image;
+
+        if (req.file) {
+            const result = await cloudinary.uploader.upload(req.file.path);
+            imageUrl = result.secure_url;
+        }
+
         blog.title = title;
         blog.content = content;
         blog.category = category;
+        blog.image = imageUrl;
 
         await blog.save();
         res.json(blog);
@@ -67,4 +90,4 @@ async function deleteBlog(req, res) {
     }
 }
 
-module.exports = {getBlogs,createBlog,updateBlog,deleteBlog};
+module.exports = { getBlogs, createBlog, updateBlog, deleteBlog };
