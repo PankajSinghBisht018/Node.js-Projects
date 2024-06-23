@@ -9,8 +9,6 @@ import Footer from './components/Footer';
 
 const App = () => {
   const token = localStorage.getItem('token');
-  
-  console.log("Token from localStorage:", token); 
 
   return (
     <Router>

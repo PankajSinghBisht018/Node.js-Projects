@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { getBlogs, deleteBlog } from '../api';
 import BlogCard from './BlogCard';
 import { Grid, Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
-  const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { createBlog, updateBlog, getBlogById } from '../api';
-import { TextField, Button, Container, Typography, Grid, Paper } from '@mui/material';
+import { TextField, Button, Typography, Grid, Box } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
@@ -45,6 +45,7 @@ const BlogForm = ({ isEdit }) => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       try {
         const formData = new FormData();
@@ -70,80 +71,108 @@ const BlogForm = ({ isEdit }) => {
   };
 
   return (
-    <Container maxWidth="xs"  sx={{ padding: 2, marginTop: 20 }}>
-      <Paper elevation={3} sx={{ padding: 2}}>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Box
+        component="form"
+        onSubmit={formik.handleSubmit}
+        sx={{
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          color: 'white', 
+          maxWidth: '400px',
+          width: '100%',
+          borderRadius: 2,
+          padding: 4,
+        }}
+      >
         <Typography variant="h4" align="center" gutterBottom>
           {isEdit ? 'Edit Blog' : 'Add Blog'}
         </Typography>
-        <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="title"
-                name="title"
-                label="Title"
-                value={formik.values.title}
-                onChange={formik.handleChange}
-                error={formik.touched.title && Boolean(formik.errors.title)}
-                helperText={formik.touched.title && formik.errors.title}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="content"
-                name="content"
-                label="Content"
-                multiline
-                rows={4}
-                value={formik.values.content}
-                onChange={formik.handleChange}
-                error={formik.touched.content && Boolean(formik.errors.content)}
-                helperText={formik.touched.content && formik.errors.content}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="category"
-                name="category"
-                label="Category"
-                value={formik.values.category}
-                onChange={formik.handleChange}
-                error={formik.touched.category && Boolean(formik.errors.category)}
-                helperText={formik.touched.category && formik.errors.category}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <input
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="image"
-                name="image"
-                type="file"
-                onChange={handleFileChange}
-              />
-              <label htmlFor="image">
-                <Button variant="contained" component="span">
-                  Upload Image
-                </Button>
-              </label>
-              {formik.touched.image && formik.errors.image && (
-                <Typography color="error" variant="body2" sx={{ marginTop: 1 }}>
-                  {formik.errors.image}
-                </Typography>
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <Button color="primary" variant="contained" fullWidth type="submit">
-                {isEdit ? 'Update Blog' : 'Post Blog'}
-              </Button>
-            </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="title"
+              name="title"
+              label="Title"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              error={formik.touched.title && Boolean(formik.errors.title)}
+              helperText={formik.touched.title && formik.errors.title}
+              InputLabelProps={{ style: { color: 'white'} }} 
+              InputProps={{
+                style: { color: 'white',  }, 
+              }}
+            />
           </Grid>
-        </form>
-      </Paper>
-    </Container>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="content"
+              name="content"
+              label="Content"
+              multiline
+              rows={4}
+              value={formik.values.content}
+              onChange={formik.handleChange}
+              error={formik.touched.content && Boolean(formik.errors.content)}
+              helperText={formik.touched.content && formik.errors.content}
+              InputLabelProps={{ style: { color: 'white',  } }}
+              InputProps={{
+                style: { ccolor: 'white',  },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="category"
+              name="category"
+              label="Category"
+              value={formik.values.category}
+              onChange={formik.handleChange}
+              error={formik.touched.category && Boolean(formik.errors.category)}
+              helperText={formik.touched.category && formik.errors.category}
+              InputLabelProps={{ style: { color: 'white',  } }}
+              InputProps={{
+                style: { color: 'white',  },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="image"
+              name="image"
+              type="file"
+              onChange={handleFileChange}
+            />
+            <label htmlFor="image">
+              <Button variant="outlined" component="span" sx={{bgcolor: 'pink', color:'black'}} >
+                Upload Image
+              </Button>
+            </label>
+            {formik.touched.image && formik.errors.image && (
+              <Typography color="error" variant="body2" sx={{ marginTop: 1 }}>
+                {formik.errors.image}
+              </Typography>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="outlined"  sx={{bgcolor: 'pink', color:'black'}} fullWidth type="submit">
+              {isEdit ? 'Update Blog' : 'Post Blog'}
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
   );
 };
 
