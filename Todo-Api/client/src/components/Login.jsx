@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Avatar, Grid, Paper, TextField, Button, Tabs, Tab, Box, Typography, IconButton, Modal, Backdrop } from '@mui/material';
+import { Avatar, Grid, Paper, TextField, Button, Tabs, Tab, Box, Typography, IconButton, Modal,Link } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,31 +53,31 @@ function Login({ onLogin }) {
 
   const handleLoginSubmit = (values, { setSubmitting }) => {
     axios.post('http://localhost:5000/user/signin', values)
-      .then(response => {
-        const { token } = response.data;
-        localStorage.setItem('token', token);
-        onLogin();
-      })
-      .catch(error => {
-        console.error('Login error:', error.response || error.message);
-        setErrorMessage('Invalid email or password');
-        setSubmitting(false);
-      });
-  };
+        .then(response => {
+            const { token } = response.data;
+            localStorage.setItem('token', token);
+            onLogin();
+        })
+        .catch(error => {
+            console.error('Login error:', error.response || error.message);
+            setErrorMessage('Invalid email or password');
+            setSubmitting(false);
+        });
+};
 
-  const handleSignUpSubmit = (values, { setSubmitting }) => {
+const handleSignUpSubmit = (values, { setSubmitting }) => {
     axios.post('http://localhost:5000/user/signup', values)
-      .then(response => {
-        setSubmitting(false);
-        setErrorMessage('');
-        setTabValue(0);
-      })
-      .catch(error => {
-        console.error('Signup error:', error.response || error.message);
-        setErrorMessage('User already exists');
-        setSubmitting(false);
-      });
-  };
+        .then(response => {
+            setSubmitting(false);
+            setErrorMessage('');
+            setTabValue(0);
+        })
+        .catch(error => {
+            console.error('Signup error:', error.response || error.message);
+            setErrorMessage('User already exists');
+            setSubmitting(false);
+        });
+};
 
   return (
     <Modal open={true}>
@@ -105,8 +106,10 @@ function Login({ onLogin }) {
                 <Form>
                   <Field as={TextField} label="Email" name="email" fullWidth required helperText={<ErrorMessage name="email" />} />
                   <Field as={TextField} label="Password" name="password" type="password" fullWidth required helperText={<ErrorMessage name="password" />} />
-                  <Button type="submit" color="primary" variant="contained" fullWidth disabled={isSubmitting}>Login</Button>
+                  <Button type="submit" color="primary" variant="contained" fullWidth disabled={isSubmitting}>Login</Button> 
+                  <Typography sx={{lineHeight:3}}>Forgot your password? <Link href="/password-reset" variant="body2">Click here</Link></Typography>
                 </Form>
+               
               )}
             </Formik>
           </TabPanel>

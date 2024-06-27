@@ -4,7 +4,7 @@ import { faTrash, faEdit, faSave, faPlus, faSpinner } from '@fortawesome/free-so
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Button, Checkbox, Container, Grid, Paper, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Checkbox, Container, Grid, Paper, TextField, Typography, useTheme } from '@mui/material';
 
 const Todo = ({ todos, showCompleted, fetchTodos }) => {
     const [title, setTitle] = useState('');
@@ -99,7 +99,6 @@ const Todo = ({ todos, showCompleted, fetchTodos }) => {
     };
 
     const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
         <Container maxWidth="md" className='my-5'>
