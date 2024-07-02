@@ -7,7 +7,6 @@ const emailSchema = new mongoose.Schema({
   recipient: { type: String, required: true },
   cc: { type: String },
   bcc: { type: String },
-  attachments: [String],
   sentAt: { type: Date, default: Date.now },
 });
 
