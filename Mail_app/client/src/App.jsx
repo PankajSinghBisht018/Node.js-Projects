@@ -1,22 +1,37 @@
 import React from 'react';
-import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import EmailForm from './components/EmailForm';
 import Footer from './components/Footer';
+import Home from './pages/Home';
+import Campaign from './pages/Campaign';
+import Contact from './pages/Contact';
+import Features from './pages/Features';
+import Pricing from './pages/Pricing';
+import Cart from './components/Cart';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <Router>
+      <div >
       <Navbar />
-      <SignedIn>
-        <EmailForm />
-      </SignedIn>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-      <Footer/>
-    </div>
+        <SignedIn>
+          
+        </SignedIn>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/campaign" element={<Campaign />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+        <SignedOut>
+        </SignedOut>
+        <Footer />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

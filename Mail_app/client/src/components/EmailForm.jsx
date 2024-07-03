@@ -36,18 +36,18 @@ const EmailForm = () => {
     try {
       const response = await axios.post('http://localhost:8000/api/send-email', {
         ...emailData,
-        sender: user.primaryEmailAddress,
+        sender: user ? user.primaryEmailAddress : '',
         scheduleDate: null,
       });
       if (response.data.success) {
-        showToast('Success', response.data.message);
+        showToast('success','Success', response.data.message);
         resetForm();
       } else {
         showToast(response.data.message || 'Failed to send email');
       }
     } catch (error) {
       console.error('Error sending email:', error);
-      showToast('Failed to send email');
+      showToast('error','Failed to send email');
     }
   };
 
@@ -55,7 +55,7 @@ const EmailForm = () => {
     try {
       const response = await axios.post('http://localhost:8000/api/send-email', emailData);
       if (response.data.message) {
-        showToast('success', 'Success', response.data.message);
+          showToast('success', 'Success', response.data.message); 
         resetForm();
       } else {
         showToast(response.data.message || 'Failed to schedule email');
@@ -79,7 +79,7 @@ const EmailForm = () => {
     setEmailData({
       subject: '',
       body: '',
-      sender: '',
+      sender: user ? user.primaryEmailAddress : '', 
       recipient: '',
       cc: '',
       bcc: '',
@@ -92,53 +92,53 @@ const EmailForm = () => {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-2xl space-y-4 mt-10">
-      <h1 className="text-xl font-bold text-center">Send Email</h1>
+    <div className="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-2xl space-y-4 mt-10 text-black">
+      <h1 className="text-xl font-bold text-center">Contact Us</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="mb-4 flex items-center">
           <label htmlFor="subject" className="w-20 font-semibold text-gray-600">Subject:</label>
           <span className="p-float-label flex-1">
-            <InputText id="subject" name="subject" value={emailData.subject} onChange={handleChange} className="w-full" />
+            <InputText id="subject" name="subject" value={emailData.subject} onChange={handleChange} className="w-full border-4" />
           </span>
         </div>
         <div className="mb-4 flex items-center">
           <label htmlFor="recipient" className="w-20 font-semibold text-gray-600">Recipient:</label>
           <span className="p-float-label flex-1">
-            <InputText id="recipient" name="recipient" value={emailData.recipient} onChange={handleChange} className="w-full" />
+            <InputText id="recipient" name="recipient" value={emailData.recipient} onChange={handleChange} className="w-full border-4 " />
           </span>
         </div>
         <div className="mb-4 flex items-center">
           <label htmlFor="body" className="w-20 font-semibold text-gray-600">Body:</label>
           <span className="p-float-label flex-1">
-            <InputTextarea id="body" name="body" value={emailData.body} onChange={handleChange} rows={5} className="w-full" style={{ fontSize: '24px' }} />
+            <InputTextarea id="body" name="body" value={emailData.body} onChange={handleChange} rows={5} className="w-full border-4" style={{ fontSize: '24px' }} />
           </span>
         </div>
         <div className="mb-4 flex items-center">
           <label htmlFor="sender" className="w-20 font-semibold text-gray-600">Sender:</label>
           <span className="p-float-label flex-1">
-            <InputText id="sender" name="sender" value={user.primaryEmailAddress} onChange={handleChange} className="w-full" />
+            <InputText id="sender" name="sender" value={user ? user.primaryEmailAddress : ''} readOnly className="w-full border-4" />
           </span>
         </div>
         <div className="mb-4 flex items-center">
           <label htmlFor="cc" className="w-20 font-semibold text-gray-600">CC:</label>
           <span className="p-float-label flex-1">
-            <InputText id="cc" name="cc" value={emailData.cc} onChange={handleChange} className="w-full" />
+            <InputText id="cc" name="cc" value={emailData.cc} onChange={handleChange} className="w-full border-4" />
           </span>
         </div>
         <div className="mb-4 flex items-center">
           <label htmlFor="bcc" className="w-20 font-semibold text-gray-600">BCC:</label>
           <span className="p-float-label flex-1">
-            <InputText id="bcc" name="bcc" value={emailData.bcc} onChange={handleChange} className="w-full" />
+            <InputText id="bcc" name="bcc" value={emailData.bcc} onChange={handleChange} className="w-full border-4" />
           </span>
         </div>
         <div className="mb-4 flex items-center">
           <label htmlFor="scheduleDate" className="w-20 font-semibold text-gray-600">Schedule:</label>
           <span className="p-float-label flex-1">
-            <Calendar id="scheduleDate" name="scheduleDate" value={emailData.scheduleDate} onChange={handleChange} showTime showSeconds className="w-full" placeholder="Select Schedule Date & Time" />
+            <Calendar id="scheduleDate" name="scheduleDate" value={emailData.scheduleDate} onChange={handleChange} showTime showSeconds className="w-full border-4" placeholder="Select Schedule Date & Time" />
           </span>
         </div>
         <div className="mb-4 flex space-x-4">
-          <Button label="Send Now" icon="pi pi-check" type="submit" className="w-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-md text-blue-100 pr-4 pl-4" />
+          <Button label="Send Now" icon="pi pi-check" type="submit" className="w-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-md text-blue-100 pr-4 pl-4 " />
           <Button label="Schedule Email" icon="pi pi-calendar" type="button" onClick={handleSchedule} className="w-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-md text-blue-100 pr-4 pl-4" />
         </div>
       </form>
