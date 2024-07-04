@@ -15,7 +15,7 @@ const Navbar = () => {
           <SignedIn>
             <Link to="/" className="text-white text-xl font-bold hover:underline">Home</Link>
             <Link to="/contact" className="text-white text-xl font-bold hover:underline">Contact</Link>
-            <Link to="/campaign" className="text-white text-xl font-bold hover:underline">Campaign</Link>
+            <Link to="/campaign" className="text-white text-xl font-bold hover:underline">Campaign</Link> 
             <Link to="/pricing" className="text-white text-xl font-bold hover:underline">Pricing</Link>
             <Link to="/features" className="text-white text-xl font-bold hover:underline">Features</Link>
             <Link to="/cart" className="text-white text-xl font-bold hover:underline">Cart</Link>
@@ -35,10 +35,11 @@ const Navbar = () => {
       <Sidebar visible={visible} onHide={() => setVisible(false)} position='right' className='bg-gradient-to-r from-purple-900 to-black text-white text-lg font-bold'>
         <div className="flex flex-col space-y-4">
           <SignedIn>
-            <Link to="/" className=" font-bold hover:underline" onClick={() => setVisible(false)}>Home</Link>
+            <Link to="/" className="font-bold hover:underline" onClick={() => setVisible(false)}>Home</Link>
             <Link to="/contact" className="font-bold hover:underline" onClick={() => setVisible(false)}>Contact</Link>
-            <Link to="/campaign" className= "font-bold hover:underline" onClick={() => setVisible(false)}>Campaign</Link>
-            <Link to="/pricing" className=" font-bold hover:underline" onClick={() => setVisible(false)}>Pricing</Link>
+            <Link to="/campaign" className="font-bold hover:underline" onClick={() => setVisible(false)}>Campaign</Link>
+            <Link to="/start-campaign" className="font-bold hover:underline" onClick={() => setVisible(false)}>Start a Campaign</Link>
+            <Link to="/pricing" className="font-bold hover:underline" onClick={() => setVisible(false)}>Pricing</Link>
             <Link to="/features" className="font-bold hover:underline" onClick={() => setVisible(false)}>Features</Link>
             <UserButton />
           </SignedIn>

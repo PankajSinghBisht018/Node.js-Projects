@@ -21,6 +21,7 @@
     "primereact": "^10.6.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.24.0",
     "react-toastify": "^10.0.5",
     "tailwindcss": "^3.4.4",
