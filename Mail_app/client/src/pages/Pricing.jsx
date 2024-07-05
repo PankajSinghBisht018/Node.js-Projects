@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'primereact/button';
 import { motion } from 'framer-motion';
-import useCartStore from '../store/Store'; 
+import useCartStore from '../store/useCartStore'; 
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

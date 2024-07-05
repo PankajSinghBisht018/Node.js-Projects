@@ -38,7 +38,6 @@ const Navbar = () => {
             <Link to="/" className="font-bold hover:underline" onClick={() => setVisible(false)}>Home</Link>
             <Link to="/contact" className="font-bold hover:underline" onClick={() => setVisible(false)}>Contact</Link>
             <Link to="/campaign" className="font-bold hover:underline" onClick={() => setVisible(false)}>Campaign</Link>
-            <Link to="/start-campaign" className="font-bold hover:underline" onClick={() => setVisible(false)}>Start a Campaign</Link>
             <Link to="/pricing" className="font-bold hover:underline" onClick={() => setVisible(false)}>Pricing</Link>
             <Link to="/features" className="font-bold hover:underline" onClick={() => setVisible(false)}>Features</Link>
             <UserButton />

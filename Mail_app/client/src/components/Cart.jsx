@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'primereact/button';
-import useCartStore from '../store/Store';
+import useCartStore from '../store/useCartStore';
 import { motion } from 'framer-motion';
 
 const Cart = () => {

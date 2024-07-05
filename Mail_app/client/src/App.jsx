@@ -9,7 +9,9 @@ import Features from './pages/Features';
 import Pricing from './pages/Pricing';
 import Cart from './components/Cart';
 import Campaign from './pages/Campaign';
-import StartCampaign from './pages/StartCampaign';
+import CreateCampaignForm from './pages/CreateCampaignForm';
+import CampaignDetails from './pages/CampaignDetails';
+import CampaignsList from './pages/CampaignList';
 
 const App = () => {
   return (
@@ -24,7 +26,9 @@ const App = () => {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/features" element={<Features />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/start-campaign" element={<StartCampaign />} />
+          <Route path="/create" element={<CreateCampaignForm />} />
+          <Route path="/campaign-details/:campaignName" element={<CampaignDetails />} />
+          <Route path="/all-campaigns" element={<CampaignsList />} />
         </Routes>
         <Footer />
       </div>
