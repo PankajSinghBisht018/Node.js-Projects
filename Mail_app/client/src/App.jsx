@@ -12,6 +12,7 @@ import Campaign from './pages/Campaign';
 import CreateCampaignForm from './pages/CreateCampaignForm';
 import CampaignDetails from './pages/CampaignDetails';
 import CampaignsList from './pages/CampaignList';
+import EmailTemplateCreator from './pages/EmailTemplateCreator';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/create" element={<CreateCampaignForm />} />
           <Route path="/campaign-details/:campaignName" element={<CampaignDetails />} />
           <Route path="/all-campaigns" element={<CampaignsList />} />
+          <Route path="/create-template" element={<EmailTemplateCreator />} />
         </Routes>
         <Footer />
       </div>

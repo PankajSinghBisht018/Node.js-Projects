@@ -34,6 +34,10 @@ const CampaignDetails = () => {
     setSavedText('');
   };
 
+  const handleCreateTemplate = () => {
+    navigate(`/create-template`, { state: { ...formData, campaignName } });
+  };
+
   return (
     <div className="flex-1 min-h-screen bg-gradient-to-b from-black to-purple-900 text-black p-4 flex justify-center items-center">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
@@ -86,6 +90,7 @@ const CampaignDetails = () => {
           <div className="text-center">
             <p className="text-lg mb-4">{savedText}</p>
             <Button onClick={handleEdit} label="Edit" className="bg-blue-500 text-black px-4 py-2 rounded" />
+            <Button onClick={handleCreateTemplate} label="Generate Email Template" className="bg-blue-500 text-black px-4 py-2 rounded mt-4" />
           </div>
         )}
       </div>

@@ -24,7 +24,7 @@ const CreateCampaignForm = () => {
             id="campaignName"
             value={campaignName}
             onChange={(e) => setCampaignName(e.target.value)}
-            className="px-4 py-2 rounded bg-gray-700 text-white"
+            className="px-4 py-2 rounded bg-gray-700 text-white w-1/2"
             required
           />
         </div>
