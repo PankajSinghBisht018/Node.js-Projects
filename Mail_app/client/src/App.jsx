@@ -8,11 +8,12 @@ import Contact from './pages/Contact';
 import Features from './pages/Features';
 import Pricing from './pages/Pricing';
 import Cart from './components/Cart';
-import Campaign from './pages/Campaign';
-import CreateCampaignForm from './pages/CreateCampaignForm';
-import CampaignDetails from './pages/CampaignDetails';
-import CampaignsList from './pages/CampaignList';
-import EmailTemplateCreator from './pages/EmailTemplateCreator';
+import Campaign from './pages/campaign/Campaign';
+import CreateCampaignForm from './pages/campaign/CreateCampaignForm';
+import CampaignDetails from './pages/campaign/CampaignDetails';
+import CampaignsList from './pages/campaign/CampaignList';
+import EmailTemplateCreator from './pages/campaign/EmailTemplateCreator';
+import SelectTemplate from './pages/campaign/SelectTemplate';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/campaign-details/:campaignName" element={<CampaignDetails />} />
           <Route path="/all-campaigns" element={<CampaignsList />} />
           <Route path="/create-template" element={<EmailTemplateCreator />} />
+          <Route path="/select-template" element={<SelectTemplate />} />
         </Routes>
         <Footer />
       </div>

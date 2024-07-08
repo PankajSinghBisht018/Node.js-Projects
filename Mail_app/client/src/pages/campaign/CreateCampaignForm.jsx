@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useCampaignStore from '../store/useCampaignStore';
+import useCampaignStore from '../../store/useCampaignStore';
 
 const CreateCampaignForm = () => {
   const [campaignName, setCampaignName] = useState('');

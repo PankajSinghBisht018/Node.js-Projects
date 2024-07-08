@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const sendEmailTemplate = async (req, res) => {
-  const { design, recipients,subject } = req.body;
+  const {  htmlContent, recipients,subject } = req.body;
 
   let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -17,7 +17,7 @@ const sendEmailTemplate = async (req, res) => {
         from: 'demoid0077@gmail.com',
         to: recipients.join(','),
         subject: subject,
-        html: design 
+        html: htmlContent,
       });
       console.log('Message sent: %s', info.messageId);
     }));

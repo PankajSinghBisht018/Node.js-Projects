@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import useCampaignStore from '../store/useCampaignStore';
+import useCampaignStore from '../../store/useCampaignStore';
+import { Dialog } from 'primereact/dialog';
 
 const CampaignDetails = () => {
   const { campaignName } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ from: '', to: '', subject: '' });
   const [savedText, setSavedText] = useState('');
+  const [isDialogVisible, setDialogVisible] = useState(false);
   const campaigns = useCampaignStore((state) => state.campaigns);
   const updateCampaign = useCampaignStore((state) => state.updateCampaign);
 
@@ -35,7 +37,15 @@ const CampaignDetails = () => {
   };
 
   const handleCreateTemplate = () => {
-    navigate(`/create-template`, { state: { ...formData, campaignName } });
+    setDialogVisible(true);
+  };
+
+  const handleNewTemplate = () => {
+    navigate(`/create-template`, { state: { ...formData, campaignName, design: null } });
+  };
+
+  const handleUseCustomTemplate = () => {
+    navigate(`/select-template`, { state: { ...formData, campaignName } });
   };
 
   return (
@@ -93,6 +103,10 @@ const CampaignDetails = () => {
             <Button onClick={handleCreateTemplate} label="Generate Email Template" className="bg-blue-500 text-black px-4 py-2 rounded mt-4" />
           </div>
         )}
+        <Dialog header="Choose Template Option" visible={isDialogVisible} onHide={() => setDialogVisible(false)}>
+          <Button label="Create Own Template" className="bg-blue-500 text-white px-4 py-2 rounded mr-2" onClick={handleNewTemplate} />
+          <Button label="Use Custom Template" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleUseCustomTemplate} />
+        </Dialog>
       </div>
     </div>
   );

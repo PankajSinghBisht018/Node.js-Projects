@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import useCampaignStore from '../store/useCampaignStore';
+import useCampaignStore from '../../store/useCampaignStore';
 
 const CampaignsList = () => {
   const campaigns = useCampaignStore(state => state.campaigns);
