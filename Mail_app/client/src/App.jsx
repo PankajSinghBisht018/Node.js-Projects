@@ -14,6 +14,7 @@ import CampaignDetails from './pages/campaign/CampaignDetails';
 import CampaignsList from './pages/campaign/CampaignList';
 import EmailTemplateCreator from './pages/campaign/EmailTemplateCreator';
 import SelectTemplate from './pages/campaign/SelectTemplate';
+import Analytics from './pages/Analytics';
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/all-campaigns" element={<CampaignsList />} />
           <Route path="/create-template" element={<EmailTemplateCreator />} />
           <Route path="/select-template" element={<SelectTemplate />} />
+          <Route path="/analytics"  element={<Analytics/>} />
         </Routes>
         <Footer />
       </div>

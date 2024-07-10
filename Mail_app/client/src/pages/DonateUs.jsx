@@ -49,7 +49,7 @@ function DonateUs() {
   };
 
   return (
-    <div className="bg-gradient-to-r from-black to-purple-900 text-white min-h-screen py-12 px-4 md:px-8">
+    <div className="bg-gradient-to-r from-black to-purple-900 text-white min-h-fit py-12 px-4 md:px-8">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}

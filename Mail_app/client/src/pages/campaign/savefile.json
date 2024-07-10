@@ -1,6 +1,7 @@
 [
   {
     "name": "Template 1",
+    "imageName": "template1.png",
     "design":{
       "counters": {
     "u_column": 8,
@@ -681,6 +682,7 @@
     
   {
     "name": "Template 2",
+    "imageName": "template2.png",
     "design":{
       "counters": {
         "u_column": 8,

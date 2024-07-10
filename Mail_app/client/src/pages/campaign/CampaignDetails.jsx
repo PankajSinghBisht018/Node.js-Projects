@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import useCampaignStore from '../../store/useCampaignStore';
-import { Dialog } from 'primereact/dialog';
 
 const CampaignDetails = () => {
   const { campaignName } = useParams();
@@ -24,7 +22,7 @@ const CampaignDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateCampaign({ ...formData, name: campaignName });
-    setSavedText(`From: ${formData.from}, To: ${formData.to}, Subject: ${formData.subject}`);
+    setSavedText(`From: ${formData.from}\nTo: ${formData.to}\nSubject: ${formData.subject}`);
   };
 
   const handleChange = (e) => {
@@ -49,63 +47,89 @@ const CampaignDetails = () => {
   };
 
   return (
-    <div className="flex-1 min-h-screen bg-gradient-to-b from-black to-purple-900 text-black p-4 flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+    <div className="flex-1 min-h-screen bg-gradient-to-b from-black to-purple-900 text-white p-4 flex flex-col justify-center items-center">
+      <div className="text-white rounded-lg shadow-lg p-6 w-full max-w-md flex flex-col justify-center items-center my-4">
+        <h1 className="text-4xl font-bold mb-8 text-center">Your Details</h1>
+      </div>
+
+      <div className="bg-white bg-opacity-50 rounded-lg shadow-lg p-6 w-full max-w-md">
         <h1 className="text-4xl font-bold mb-8 text-center">{campaignName}</h1>
         {!savedText && (
-          <form onSubmit={handleSubmit} className="text-center">
-            <div className="mb-4">
-              <label htmlFor="from" className="block text-lg mb-2">
-                From
-              </label>
-              <InputText
+          <form onSubmit={handleSubmit} className="text-center space-y-4">
+            <div>
+              <TextField
                 id="from"
                 name="from"
+                label="From"
+                variant="outlined"
+                fullWidth
                 value={formData.from}
                 onChange={handleChange}
-                className="w-full px-4 py-2 rounded bg-gray-100"
                 required
+                className="mb-4"
               />
             </div>
-            <div className="mb-4">
-              <label htmlFor="to" className="block text-lg mb-2">
-                To
-              </label>
-              <InputText
+            <div>
+              <TextField
                 id="to"
                 name="to"
+                label="To"
+                variant="outlined"
+                fullWidth
                 value={formData.to}
                 onChange={handleChange}
-                className="w-full px-4 py-2 rounded bg-gray-100"
                 required
+                className="mb-4"
               />
             </div>
-            <div className="mb-4">
-              <label htmlFor="subject" className="block text-lg mb-2">
-                Subject
-              </label>
-              <InputText
+            <div>
+              <TextField
                 id="subject"
                 name="subject"
+                label="Subject"
+                variant="outlined"
+                fullWidth
                 value={formData.subject}
                 onChange={handleChange}
-                className="w-full px-4 py-2 rounded bg-gray-100"
                 required
+                className="mb-4"
               />
             </div>
-            <Button type="submit" label="Save" className="bg-blue-500 text-black px-4 py-2 rounded" />
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Save
+            </Button>
           </form>
         )}
         {savedText && (
-          <div className="text-center">
-            <p className="text-lg mb-4">{savedText}</p>
-            <Button onClick={handleEdit} label="Edit" className="bg-blue-500 text-black px-4 py-2 rounded" />
-            <Button onClick={handleCreateTemplate} label="Generate Email Template" className="bg-blue-500 text-black px-4 py-2 rounded mt-4" />
+          <div className="text-center space-y-4   space-x-4">
+            <p className="text-lg mb-4">{savedText.split('\n').map((line, index) => (
+              <span key={index}>
+                <span className="font-bold">{line.split(':')[0]}:</span> {line.split(':')[1]}<br />
+              </span>
+            ))}</p>
+            <Button variant="contained" color="primary" onClick={handleEdit} className="mb-4">
+              Edit
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleCreateTemplate}>
+              Generate Email Template
+            </Button>
           </div>
         )}
-        <Dialog header="Choose Template Option" visible={isDialogVisible} onHide={() => setDialogVisible(false)}>
-          <Button label="Create Own Template" className="bg-blue-500 text-white px-4 py-2 rounded mr-2" onClick={handleNewTemplate} />
-          <Button label="Use Custom Template" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleUseCustomTemplate} />
+        <Dialog open={isDialogVisible} onClose={() => setDialogVisible(false)}>
+          <DialogTitle>Choose Template Option</DialogTitle>
+          <DialogContent className="space-y-4">
+            <Button variant="contained" color="primary" onClick={handleNewTemplate} fullWidth>
+              Create Own Template
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleUseCustomTemplate} fullWidth>
+              Use Custom Template
+            </Button>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialogVisible(false)} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     </div>

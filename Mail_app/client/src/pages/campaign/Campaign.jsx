@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
-import 'primereact/resources/themes/saga-blue/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
+import DonateUs from '../DonateUs';
 
 const Campaign = () => {
   const navigate = useNavigate();
@@ -19,11 +17,15 @@ const Campaign = () => {
     navigate('/all-campaigns');
   };
 
+  const handleViewAnalytics = () => {
+    setVisible(false);
+    navigate('/analytics');
+  };
+
   return (
     <div className="flex-1 min-h-screen bg-gradient-to-b from-black to-purple-900 text-white">
-
       <div className="flex">
-        <div className="static top-0 left-0  flex flex-col items-center bg-gray-800 text-white shadow-lg h-screen">
+        <div className="fixed left-0 h-screen flex flex-col items-center bg-black text-white shadow-lg">
           <Button
             icon="pi pi-bars"
             className="p-button-text p-button-plain p-0 m-4"
@@ -38,10 +40,13 @@ const Campaign = () => {
               <i className="pi pi-list text-2xl"></i>
               {visible && <span className="ml-2">Campaigns</span>}
             </li>
+            <li className="p-4 cursor-pointer hover:bg-gray-700" onClick={handleViewAnalytics}>
+              <i className="pi pi-chart-line text-2xl"></i>
+              {visible && <span className="ml-2">Analytics</span>}
+            </li>
           </ul>
         </div>
-
-        <div className="flex-1 ml-16 p-4">
+        <div className="flex-1 ml-64 p-4">
           <div className="text-center mt-4">
             <h1 className="text-4xl font-bold mb-8">Our Campaign</h1>
             <p className="text-lg mb-8">
@@ -56,6 +61,7 @@ const Campaign = () => {
           </div>
         </div>
       </div>
+      <DonateUs/>
     </div>
   );
 };
