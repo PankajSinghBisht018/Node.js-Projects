@@ -49,7 +49,7 @@ function DonateUs() {
   };
 
   return (
-    <div className="bg-gradient-to-r from-purple-800 to-indigo-900 text-white min-h-fit py-12 px-4 md:px-8">
+    <div className="bg-gradient-to-r from-black to-purple-900 text-white min-h-fit md:px-8">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -83,7 +83,7 @@ function DonateUs() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                   >
-                    <Field as={InputText} name="donorName"  className="w-full" />
+                    <Field as={InputText} name="donorName" className="w-full" />
                     <ErrorMessage name="donorName" component="div" className="text-red-500" />
                   </motion.div>
 
@@ -91,15 +91,9 @@ function DonateUs() {
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
-                  >                    
-                  <Field
-                      as={InputText}
-                      name="donorEmail"
-                      className="w-full"
-                      type="email"
-                    />
+                  >
+                    <Field as={InputText} name="donorEmail" className="w-full" type="email" />
                     <ErrorMessage name="donorEmail" component="div" className="text-red-500" />
-
                   </motion.div>
 
                   <motion.div
@@ -107,7 +101,7 @@ function DonateUs() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.5 }}
                   >
-                    <Field as={InputTextarea} name="message"  rows={3} autoResize className="w-full" />
+                    <Field as={InputTextarea} name="message" rows={3} autoResize className="w-full" />
                   </motion.div>
 
                   <motion.div
@@ -125,7 +119,7 @@ function DonateUs() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.7 }}
                     disabled={isSubmitting || !isValid}
-                    className="p-button p-button-primary p-button-lg self-center md:self-start bg-white rounded-2xl px-4"
+                    className="p-button p-button-primary p-button-lg self-center md:self-start bg-white rounded-2xl px-4 bg-gradient-to-r from-blue-500 to-purple-600" 
                   >
                     Donate Now
                     <i className="pi pi-heart ml-2"></i>
