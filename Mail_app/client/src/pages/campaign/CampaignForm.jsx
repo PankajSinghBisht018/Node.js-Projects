@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Card, CardContent, CardActions, Typography } from '@mui/material';
 import useCampaignStore from '../../store/useCampaignStore';
+import { motion } from 'framer-motion'
 
 const CampaignForm = () => {
   const navigate = useNavigate();
@@ -53,11 +54,14 @@ const CampaignForm = () => {
   };
 
   return (
-    <div className="flex-1 min-h-screen bg-gradient-to-b from-purple-600 to-purple-900 text-white p-4 flex flex-col justify-center items-center">
+    <motion.div className="flex-1 min-h-screen bg-gradient-to-r from-black to-purple-900 text-white p-4 flex flex-col justify-center items-center"
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}>
       <Typography variant="h4" component="h1" className="text-center mb-8 ">
         Create Campaign
       </Typography>
-      <Card className="w-full max-w-md ">
+      <Card className="w-full max-w-md  ">
         <CardContent className="bg-white text-black rounded-lg shadow-lg p-6">
           {!savedText && (
             <form onSubmit={handleSubmit} className="space-y-4 ">
@@ -143,7 +147,7 @@ const CampaignForm = () => {
           </Dialog>
         </CardActions>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 
