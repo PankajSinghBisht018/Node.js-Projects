@@ -25,7 +25,7 @@ function Home() {
   return (
     <div className="bg-gradient-to-r from-purple-900 to-black flex flex-col justify-center min-h-screen">
       <ToastContainer />
-      <div className="relative bg-gradient-to-r from-black to-purple-900 flex items-center">
+      <div className="relative bg-gradient-to-l from-black to-purple-900 flex items-center">
         <div className="absolute inset-0"></div>
         <motion.div
           className="z-10 max-w-5xl mx-auto text-center text-white py-20 px-6 md:px-12"
