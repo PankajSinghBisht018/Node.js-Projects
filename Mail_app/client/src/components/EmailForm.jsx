@@ -138,7 +138,7 @@ const EmailForm = () => {
           </span>
         </div>
         <div className="mb-4 flex space-x-4">
-          <Button label="Send Now" icon="pi pi-check" type="submit" className=space-x-4/>
+          <Button label="Send Now" icon="pi pi-check" type="submit" className="space-x-4"/>
           <Button label="Schedule Email" icon="pi pi-calendar" type="button" onClick={handleSchedule} className="w-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-md text-blue-100 pr-4 pl-4" />
         </div>
       </form>
