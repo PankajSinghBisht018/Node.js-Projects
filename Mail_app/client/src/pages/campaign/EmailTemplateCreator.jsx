@@ -4,20 +4,24 @@ import EmailEditor from 'react-email-editor';
 import sample from './savefile.json';
 import axios from 'axios';
 import SaveIcon from '@mui/icons-material/Save';
-import DownloadIcon from '@mui/icons-material/Download';
 import SendIcon from '@mui/icons-material/Send';
 import PsychologyIcon from '@mui/icons-material/Psychology';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'; 
-import { Button } from '@mui/material';
-import { GoogleGenerativeAI } from "@google/generative-ai"; 
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const EmailTemplateCreator = () => {
   const location = useLocation();
   const emailEditorRef = useRef(null);
   const [editorLoaded, setEditorLoaded] = useState(false);
   const [generatedContent, setGeneratedContent] = useState('');
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+  const [scheduledDate, setScheduledDate] = useState(new Date());
 
   useEffect(() => {
     if (editorLoaded) {
@@ -86,16 +90,53 @@ const EmailTemplateCreator = () => {
         campaignName,
         htmlContent: html || '<p>Default email content goes here.</p>',
         design: JSON.stringify(design),
-        recipients: to.split(',').map(email => email.trim()), 
+        recipients: to.split(',').map((email) => email.trim()),
       })
-      .then(response => {
-        console.log('Email sent successfully', response);
-        toast.success('Email sent successfully');
+        .then((response) => {
+          console.log('Email sent successfully', response);
+          toast.success('Email sent successfully');
+        })
+        .catch((error) => {
+          console.error('Error sending email', error);
+          toast.error('Error sending email');
+        });
+    } catch (error) {
+      console.error('Error exporting HTML', error);
+      toast.error('Error exporting HTML');
+    }
+  };
+
+  const scheduleEmail = async () => {
+    const { from, to, subject, campaignName } = location.state || {};
+
+    if (!from || !to || !subject || !campaignName) {
+      console.error('Missing required data (from, to, subject, campaignName)');
+      toast.error('Missing required data (from, to, subject, campaignName)');
+      return;
+    }
+
+    try {
+      const { html, design } = await exportHtml();
+
+      axios.post('http://localhost:8000/api/temp-email', {
+        from,
+        to,
+        subject,
+        campaignName,
+        htmlContent: html || '<p>Default email content goes here.</p>',
+        design: JSON.stringify(design),
+        recipients: to.split(',').map((email) => email.trim()),
+        scheduledDate,
       })
-      .catch(error => {
-        console.error('Error sending email', error);
-        toast.error('Error sending email');
-      });
+        .then((response) => {
+          console.log('Email scheduled successfully', response);
+          toast.success('Email scheduled successfully');
+          setScheduleDialogOpen(false);
+        })
+        .catch((error) => {
+          console.error('Error scheduling email', error);
+          toast.error('Error scheduling email');
+        });
     } catch (error) {
       console.error('Error exporting HTML', error);
       toast.error('Error exporting HTML');
@@ -111,11 +152,9 @@ const EmailTemplateCreator = () => {
     }
 
     try {
-      const genAI = new GoogleGenerativeAI('AIzaSyAZDaf7usmQ7am6FfWC7J367UKFLalBqUo'); 
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" }); 
-
-      const prompt = `email templates content related to ${subject}`; 
-
+      const genAI = new GoogleGenerativeAI('AIzaSyAZDaf7usmQ7am6FfWC7J367UKFLalBqUo');
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+      const prompt = `email templates content related to ${subject}`;
       const result = await model.generateContent(prompt);
       const response = result.response;
       const text = response.text();
@@ -138,7 +177,6 @@ const EmailTemplateCreator = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-4 text-center">Email Template Editor</h1>
-      
       <div className="mb-4 flex justify-center items-center">
         <EmailEditor ref={emailEditorRef} onLoad={handleEditorLoad} minHeight="70vh" />
       </div>
@@ -147,58 +185,80 @@ const EmailTemplateCreator = () => {
         <Button
           onClick={saveDesign}
           variant="contained"
-          color="primary"
           startIcon={<SaveIcon />}
+          className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md"
         >
           Save Design
         </Button>
         <Button
-          onClick={exportHtml}
-          variant="contained"
-          color="primary"
-          startIcon={<DownloadIcon />}
-        >
-          Export HTML
-        </Button>
-        <Button
           onClick={sendEmail}
           variant="contained"
-          color="primary"
           startIcon={<SendIcon />}
+          className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md"
         >
           Send Email
         </Button>
         <Button
           onClick={generateEmailContent}
           variant="contained"
-          color="primary"
-          startIcon={<PsychologyIcon />} 
+          startIcon={<PsychologyIcon />}
+          className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md"
         >
           Generate Email Content
+        </Button>
+        <Button
+          onClick={() => setScheduleDialogOpen(true)}
+          variant="contained"
+          startIcon={<ScheduleIcon />}
+          className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md"
+        >
+          Schedule Email
         </Button>
       </div>
 
       {generatedContent && (
         <div className="mt-8 flex flex-col space-y-5">
-          <div className='flex justify-between'>
+          <div className="flex justify-between">
             <h2 className="text-xl font-bold mb-4 text-left">Generated Email Content:</h2>
             <Button
               onClick={copyToClipboard}
               variant="contained"
-              color="primary"
               startIcon={<ContentCopyIcon />}
-              className=""
+              className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md"
             >
               Copy Content
             </Button>
           </div>
-          <div className="bg-opacity-80 bg-black text-white p-4 rounded-lg font-bold min-h-fit" style={{ whiteSpace: 'pre-line' }}>
-            <p>{generatedContent}</p> 
+          <div
+            className="bg-opacity-80 bg-black text-white p-4 rounded-lg font-bold min-h-fit"
+            style={{ whiteSpace: 'pre-line' }}
+          >
+            <p>{generatedContent}</p>
           </div>
         </div>
       )}
 
-      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      <Dialog open={scheduleDialogOpen} onClose={() => setScheduleDialogOpen(false)}>
+        <DialogTitle>Schedule Email</DialogTitle>
+        <DialogContent>
+          <DatePicker
+            selected={scheduledDate}
+            onChange={(date) => setScheduledDate(date)}
+            showTimeSelect
+            dateFormat="Pp"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setScheduleDialogOpen(false)} className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md">
+            Cancel
+          </Button>
+          <Button onClick={scheduleEmail} className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md">
+            Schedule
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} />
     </div>
   );
 };

@@ -5,8 +5,11 @@ const emailTemplateSchema = new mongoose.Schema({
   htmlContent: { type: String, required: true },
   recipient: { type: String, required: true },
   sender: { type: String, required: true },
-  messageId: { type: String, required: true }, 
-  sentAt: { type: Date, default: Date.now },
+  messageId: { type: String },
+  sentAt: { type: Date },
+  scheduledDate: { type: Date }, 
+  isScheduled: { type: Boolean, default: false }, 
+  sent: { type: Boolean, default: false } 
 });
 
 module.exports = mongoose.model('EmailTemplate', emailTemplateSchema);
