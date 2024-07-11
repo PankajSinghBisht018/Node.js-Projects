@@ -9,16 +9,16 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-gradient-to-r from-pink-500 to-purple-600 p-4 flex justify-between items-center shadow-lg">
+      <nav className="bg-gradient-to-l from-pink-100 to-purple-600 p-4 flex justify-between items-center shadow-lg">
         <div className="text-white text-2xl font-bold">Mail App</div>
         <div className="hidden md:flex space-x-8">
           <SignedIn>
-            <Link to="/" className="text-white text-xl font-bold hover:underline">Home</Link>
-            <Link to="/contact" className="text-white text-xl font-bold hover:underline">Contact</Link>
-            <Link to="/campaign" className="text-white text-xl font-bold hover:underline">Campaign</Link> 
-            <Link to="/pricing" className="text-white text-xl font-bold hover:underline">Pricing</Link>
-            <Link to="/features" className="text-white text-xl font-bold hover:underline">Features</Link>
-            <Link to="/cart" className="text-white text-xl font-bold hover:underline">Cart</Link>
+            <Link to="/" className="text-purple-900 text-xl font-bold hover:underline">Home</Link>
+            <Link to="/contact" className="text-purple-900 text-xl font-bold hover:underline">Contact</Link>
+            <Link to="/campaign" className="text-purple-900 text-xl font-bold hover:underline">Campaign</Link> 
+            <Link to="/pricing" className="text-purple-900 text-xl font-bold hover:underline">Pricing</Link>
+            <Link to="/features" className="text-purple-900 text-xl font-bold hover:underline">Features</Link>
+            <Link to="/cart" className="text-purple-900 text-xl font-bold hover:underline">Cart</Link>
             <UserButton />
           </SignedIn>
           <SignedOut>
@@ -32,7 +32,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <Sidebar visible={visible} onHide={() => setVisible(false)} position='right' className='bg-gradient-to-r from-purple-900 to-black text-white text-lg font-bold'>
+      <Sidebar visible={visible} onHide={() => setVisible(false)} position='right'  className='bg-gradient-to-l from-pink-100 to-purple-600 text-white text-lg font-bold'>
         <div className="flex flex-col space-y-4">
           <SignedIn>
             <Link to="/" className="font-bold hover:underline" onClick={() => setVisible(false)}>Home</Link>
