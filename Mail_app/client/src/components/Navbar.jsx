@@ -3,6 +3,7 @@ import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
+import { checkRole } from '../utils/roles';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -15,10 +16,11 @@ const Navbar = () => {
           <SignedIn>
             <Link to="/" className="text-purple-900 text-xl font-bold hover:underline">Home</Link>
             <Link to="/contact" className="text-purple-900 text-xl font-bold hover:underline">Contact</Link>
-            <Link to="/campaign" className="text-purple-900 text-xl font-bold hover:underline">Campaign</Link> 
+            <Link to="/campaign" className="text-purple-900 text-xl font-bold hover:underline">Campaign</Link>
             <Link to="/pricing" className="text-purple-900 text-xl font-bold hover:underline">Pricing</Link>
             <Link to="/features" className="text-purple-900 text-xl font-bold hover:underline">Features</Link>
             <Link to="/cart" className="text-purple-900 text-xl font-bold hover:underline">Cart</Link>
+            {checkRole('admin') && <Link to="/admin" className="text-purple-900 text-xl font-bold hover:underline">Admin</Link>}
             <UserButton />
           </SignedIn>
           <SignedOut>
@@ -32,7 +34,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <Sidebar visible={visible} onHide={() => setVisible(false)} position='right'  className='bg-gradient-to-l from-pink-100 to-purple-600 text-white text-lg font-bold'>
+      <Sidebar visible={visible} onHide={() => setVisible(false)} position="right" className="bg-gradient-to-l from-pink-100 to-purple-600 text-white text-lg font-bold">
         <div className="flex flex-col space-y-4">
           <SignedIn>
             <Link to="/" className="font-bold hover:underline" onClick={() => setVisible(false)}>Home</Link>
@@ -40,6 +42,7 @@ const Navbar = () => {
             <Link to="/campaign" className="font-bold hover:underline" onClick={() => setVisible(false)}>Campaign</Link>
             <Link to="/pricing" className="font-bold hover:underline" onClick={() => setVisible(false)}>Pricing</Link>
             <Link to="/features" className="font-bold hover:underline" onClick={() => setVisible(false)}>Features</Link>
+            {checkRole('admin') && <Link to="/admin" className="font-bold hover:underline" onClick={() => setVisible(false)}>Admin</Link>}
             <UserButton />
           </SignedIn>
           <SignedOut>
