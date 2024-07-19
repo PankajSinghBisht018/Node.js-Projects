@@ -1,18 +1,21 @@
 import React from 'react';
-import { useUser } from '@clerk/clerk-react';
 import { Navigate } from 'react-router-dom';
+import { useAuth, useUser } from '@clerk/clerk-react';
+import { checkRole } from '../utils/roles';
 
 const ProtectedRoute = ({ roles, children }) => {
+  const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
 
-  if (!user) {
-    return <Navigate to="/campaign" />;
+  if (!isLoaded) {
+    return <div>Loading...</div>;
   }
 
-  const userRoles = user.publicMetadata.roles || [];
-  const hasAccess = roles.some(role => userRoles.includes(role));
-
-  return hasAccess ? children : <Navigate to="/" />;
+  if (isSignedIn && roles.some(role => checkRole(user, role))) {
+    return children;
+  } else {
+    return <Navigate to="/" />;
+  }
 };
 
 export default ProtectedRoute;
