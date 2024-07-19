@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, UserButton, SignInButton, useAuth, useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import { checkRole } from '../utils/roles';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
+  const { isLoaded, isSignedIn } = useAuth();
+  const { user } = useUser();
+
+  const isAdmin = isLoaded && isSignedIn && checkRole(user, 'admin');
+  const isDeveloper = isLoaded && isSignedIn && checkRole(user, 'developer');
 
   return (
     <>
@@ -20,7 +25,12 @@ const Navbar = () => {
             <Link to="/pricing" className="text-purple-900 text-xl font-bold hover:underline">Pricing</Link>
             <Link to="/features" className="text-purple-900 text-xl font-bold hover:underline">Features</Link>
             <Link to="/cart" className="text-purple-900 text-xl font-bold hover:underline">Cart</Link>
-            {checkRole('admin') && <Link to="/admin" className="text-purple-900 text-xl font-bold hover:underline">Admin</Link>}
+            {isAdmin && (
+              <Link to="/admin" className="text-purple-900 text-xl font-bold hover:underline">Admin</Link>
+            )}
+            {isDeveloper && (
+              <Link to="/developer" className="text-purple-900 text-xl font-bold hover:underline">Developer</Link>
+            )}
             <UserButton />
           </SignedIn>
           <SignedOut>
@@ -42,7 +52,12 @@ const Navbar = () => {
             <Link to="/campaign" className="font-bold hover:underline" onClick={() => setVisible(false)}>Campaign</Link>
             <Link to="/pricing" className="font-bold hover:underline" onClick={() => setVisible(false)}>Pricing</Link>
             <Link to="/features" className="font-bold hover:underline" onClick={() => setVisible(false)}>Features</Link>
-            {checkRole('admin') && <Link to="/admin" className="font-bold hover:underline" onClick={() => setVisible(false)}>Admin</Link>}
+            {isAdmin && (
+              <Link to="/admin" className="font-bold hover:underline" onClick={() => setVisible(false)}>Admin</Link>
+            )}
+            {isDeveloper && (
+              <Link to="/developer" className="font-bold hover:underline" onClick={() => setVisible(false)}>Developer</Link>
+            )}
             <UserButton />
           </SignedIn>
           <SignedOut>
