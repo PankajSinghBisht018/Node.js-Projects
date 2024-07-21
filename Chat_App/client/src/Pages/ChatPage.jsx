@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
-import { Box, Button, Input, VStack, HStack, Heading, Avatar, Text, InputGroup, InputRightElement, } from '@chakra-ui/react';
-import { FaTrash, FaSearch } from 'react-icons/fa';
+import { Button, Avatar, Typography, TextField, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { FaTrash } from 'react-icons/fa';
+import { Logout, Send } from '@mui/icons-material';
 
 function ChatPage() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState('');
+  const [activeChat, setActiveChat] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const email = localStorage.getItem('email');
@@ -64,8 +65,8 @@ function ChatPage() {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    if (message.trim()) {
-      const newMessage = { user: email, message };
+    if (message.trim() && activeChat) {
+      const newMessage = { sender: email, receiver: activeChat, message };
       socket.emit('chat-message', newMessage);
       setMessage('');
     }
@@ -88,70 +89,95 @@ function ChatPage() {
     }
   };
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
   return (
-    <Box maxW="800px" mx="auto" mt={10} p={5} borderWidth={1} borderRadius="lg" bg="rgba(0, 0, 0, 0.5)">
-      <Heading size="lg" mb={4} color="white">Chat Room</Heading>
-      <VStack spacing={4} align="stretch">
-        <VStack align="start">
-          <Heading size="md" color="white">Welcome, {email}!</Heading>
-          <Text fontSize="sm" color="gray.300">Online Users:</Text>
-          {users.map((user) => (
-            <HStack key={user} alignItems="center">
-              <Avatar size="sm" name={user} />
-              <Text color="white">{user}</Text>
-            </HStack>
-          ))}
-        </VStack>
-        <Box borderWidth={1} borderRadius="lg" p={4} minHeight="400px" maxHeight="400px" overflowY="auto">
-          {messages.map((msg, index) => (
-            <Box key={index} borderWidth={1} borderRadius="lg" p={2} mb={2}>
-              <Text fontWeight="bold" color="white">{msg.user}</Text>
-              <Text color="white">{msg.message}</Text>
-            </Box>
-          ))}
-        </Box>
-        <form onSubmit={sendMessage}>
-          <InputGroup>
-            <Input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              size="md"
-              flex="1"
-              bg="gray.800"
-              color="white"
-              _placeholder={{ color: 'gray.400' }}
-              _focus={{ bg: 'gray.700' }}
-            />
-            <InputRightElement width="4.5rem">
-              <Button type="submit" colorScheme="blue" size="sm">Send</Button>
-            </InputRightElement>
-          </InputGroup>
+    <div className="flex h-screen bg-gradient-to-r from-blue-500 to-red-500">
+      <div className="w-1/4 bg-gray-800 text-white flex flex-col">
+        <Typography variant="h6" className="p-4">Online Users</Typography>
+        <List className="flex-1 overflow-y-auto">
+          {users
+            .filter(user => user !== email)
+            .map((user) => (
+              <ListItem
+                key={user}
+                button
+                selected={activeChat === user}
+                onClick={() => setActiveChat(user)}
+                className="hover:bg-gray-700"
+              >
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: 'green' }}>
+                    {user[0]}
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText 
+                  primary={user}
+                  secondary={
+                    <span className={`inline-block w-2 h-2 rounded-full ${users.includes(user) ? 'bg-green-500' : 'bg-gray-500'}`} />
+                  }
+                />
+              </ListItem>
+            ))}
+        </List>
+        <div className="p-4 flex justify-between">
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<Logout />}
+            onClick={logout}
+          >
+            Logout
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleDeleteAllMessages}
+            startIcon={<FaTrash />}
+          >
+            Delete All
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex-1 bg-gray-900 text-white flex flex-col">
+        <div className="flex-1 overflow-y-auto p-4">
+          {messages
+            .filter((msg) => 
+              (msg.sender === email && msg.receiver === activeChat) || 
+              (msg.sender === activeChat && msg.receiver === email)
+            )
+            .map((msg, index) => (
+              <div
+                key={index}
+                className={`mb-4 flex ${msg.sender === email ? 'justify-end' : 'justify-start'}`}
+              >
+                <div className={`p-2 rounded-lg ${msg.sender === email ? 'bg-blue-500 text-white' : 'bg-gray-700 text-white'}`}>
+                  <Typography variant="subtitle1" className="font-bold">{msg.sender}:</Typography>
+                  <Typography>{msg.message}</Typography>
+                </div>
+              </div>
+            ))}
+        </div>
+
+        <form onSubmit={sendMessage} className="p-4 flex space-x-2">
+          <TextField
+            variant="outlined"
+            className="flex-1 bg-gray-800"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type a message..."
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className="ml-2"
+            startIcon={<Send />}
+          >
+            Send
+          </Button>
         </form>
-      </VStack>
-      <HStack mt={4} justify="space-between">
-        <Button colorScheme="red" onClick={logout}>Logout</Button>
-        <Button colorScheme="blue" leftIcon={<FaTrash />} onClick={handleDeleteAllMessages}>Delete All Messages</Button>
-        <Input
-          value={search}
-          onChange={handleSearch}
-          placeholder="Search users..."
-          size="md"
-          flex="1"
-          maxW="md"
-          bg="gray.800"
-          color="white"
-          _placeholder={{ color: 'gray.400' }}
-          _focus={{ bg: 'gray.700' }}
-        />
-        <Button colorScheme="blue" leftIcon={<FaSearch />}>Search</Button>
-      </HStack>
-    </Box>
+      </div>
+    </div>
   );
 }
 
