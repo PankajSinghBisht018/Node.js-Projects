@@ -11,7 +11,7 @@ module.exports = (io) => {
       users.set(socket.id, email);
       console.log(`User joined: ${email}`);
       io.emit('user-joined', email);
-      io.emit('online-users', Array.from(users.values()));
+      io.emit('online-users', Array.from(users.values()).filter(user => user !== email));
     });
 
     socket.on('chat-message', async (msg) => {
@@ -29,7 +29,7 @@ module.exports = (io) => {
         users.delete(socket.id);
         console.log(`User left: ${socket.email}`);
         io.emit('user-left', socket.email);
-        io.emit('online-users', Array.from(users.values()));
+        io.emit('online-users', Array.from(users.values()).filter(user => user !== socket.email));
       }
     });
   });
