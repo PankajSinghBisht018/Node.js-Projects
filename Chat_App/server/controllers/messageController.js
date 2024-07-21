@@ -1,8 +1,14 @@
 const Message = require('../models/Message');
 
 const getMessages = async (req, res) => {
+  const { user } = req.query;
   try {
-    const messages = await Message.find().sort({ timestamp: 1 });
+    const messages = await Message.find({
+      $or: [
+        { sender: req.user.email, receiver: user },
+        { sender: user, receiver: req.user.email }
+      ]
+    }).sort({ timestamp: 1 });
     res.json(messages);
   } catch (err) {
     res.status(500).send('Server Error');
@@ -10,9 +16,13 @@ const getMessages = async (req, res) => {
 };
 
 const addMessage = async (req, res) => {
-  const { user, message } = req.body;
+  const { receiver, message } = req.body;
   try {
-    const newMessage = new Message({ user, message });
+    const newMessage = new Message({
+      sender: req.user.email,
+      receiver,
+      message
+    });
     await newMessage.save();
     res.status(201).json(newMessage);
   } catch (err) {
@@ -22,7 +32,7 @@ const addMessage = async (req, res) => {
 
 const deleteAllMessages = async (req, res) => {
   try {
-    await Message.deleteMany({});
+    await Message.deleteMany({ sender: req.user.email });
     res.json({ msg: 'All messages deleted' });
   } catch (err) {
     res.status(500).send('Server Error');
